@@ -106,6 +106,14 @@ http://localhost:5163/swagger
 
 ### `OrderPlacedEvent`
 
+Fila dedicada no RabbitMQ:
+
+```text
+payments-order-placed-event
+```
+
+Essa fila e exclusiva da PaymentsAPI. Se no futuro outro microsservico tambem precisar reagir a `OrderPlacedEvent`, ele deve usar outra fila dedicada, mantendo o comportamento publish/subscribe.
+
 Publicado pela CatalogAPI quando o usuario inicia a compra de um ou mais jogos.
 
 ```json

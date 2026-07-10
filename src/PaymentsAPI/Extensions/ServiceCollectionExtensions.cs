@@ -54,7 +54,8 @@ namespace PaymentsAPI.Extensions
             services.AddMassTransit(x =>
             {
                 x.SetKebabCaseEndpointNameFormatter();
-                x.AddConsumer<OrderPlacedEventConsumer>();
+                x.AddConsumer<OrderPlacedEventConsumer>()
+                    .Endpoint(endpoint => endpoint.Name = "payments-order-placed-event");
 
                 x.UsingRabbitMq((context, cfg) =>
                 {
