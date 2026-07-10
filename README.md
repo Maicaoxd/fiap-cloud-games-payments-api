@@ -203,7 +203,7 @@ Os testes atuais cobrem:
 Build da imagem:
 
 ```powershell
-docker build -t fiap-cloud-games-payments-api:latest .
+docker build -t maicaoxd/fiap-cloud-games-payments-api:0.1.0 .
 ```
 
 Executar a imagem apontando para um RabbitMQ rodando no host:
@@ -217,7 +217,7 @@ docker run --rm -p 8084:8080 `
   -e RabbitMq__Username=guest `
   -e RabbitMq__Password=guest `
   -e PaymentSimulation__DefaultStatus=Approved `
-  fiap-cloud-games-payments-api:latest
+  maicaoxd/fiap-cloud-games-payments-api:0.1.0
 ```
 
 Acessar:
@@ -229,7 +229,7 @@ http://localhost:8084/health
 
 ## Kubernetes
 
-Este microsservico deve ter manifests em `k8s/` com:
+Este microsservico tem manifests em `k8s/` com:
 
 - `Deployment`
 - `Service`
@@ -238,13 +238,13 @@ Este microsservico deve ter manifests em `k8s/` com:
 
 No cluster, configure `RabbitMq__Host` com o nome do Service do RabbitMQ, por exemplo `rabbitmq`, e mantenha dados sensiveis em `Secret`.
 
-Exemplo de comandos quando os manifests forem adicionados:
+Aplicar manifests deste servico:
 
 ```powershell
-kubectl apply -f .\k8s
-kubectl get pods
-kubectl get services
-kubectl logs deployment/payments-api
+kubectl apply -k .\k8s
+kubectl get pods -n fiap-cloud-games
+kubectl get services -n fiap-cloud-games
+kubectl logs deployment/payments-api -n fiap-cloud-games
 ```
 
 ## Problemas comuns
