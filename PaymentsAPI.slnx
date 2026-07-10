@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/PaymentsAPI/PaymentsAPI.csproj" Id="4142d867-dcf0-4111-8041-bd69ac6a8629" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/PaymentsAPI.Tests/PaymentsAPI.Tests.csproj" Id="eec96570-2ed9-4dff-88c0-9b43c7d9d186" />
+  </Folder>
+</Solution>
