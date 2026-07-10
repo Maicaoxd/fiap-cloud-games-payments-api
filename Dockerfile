@@ -9,10 +9,8 @@ WORKDIR /src
 COPY ["src/PaymentsAPI/PaymentsAPI.csproj", "src/PaymentsAPI/"]
 RUN dotnet restore "src/PaymentsAPI/PaymentsAPI.csproj"
 COPY . .
-WORKDIR "/src/src/PaymentsAPI"
-RUN dotnet build "PaymentsAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "src/PaymentsAPI/PaymentsAPI.csproj" -c $BUILD_CONFIGURATION -o /app/publish --no-restore /p:UseAppHost=false
 
 FROM runtime AS final
-USER $APP_UID
 COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "PaymentsAPI.dll"]

@@ -9,3 +9,4 @@ data:
   RabbitMq__Host: rabbitmq
   RabbitMq__Port: "5672"
   RabbitMq__VirtualHost: /
+  PaymentSimulation__DefaultStatus: Approved
