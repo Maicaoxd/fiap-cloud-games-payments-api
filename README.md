@@ -181,7 +181,7 @@ PaymentsAPI
 CatalogAPI
   consome PaymentProcessedEvent e atualiza biblioteca
 
-Function (Docker) ou NotificationsAPI (Kubernetes)
+Notifications Function (Docker e Kubernetes)
   consome PaymentProcessedEvent e simula e-mail de compra aprovada
 ```
 
