@@ -2,15 +2,13 @@
 
 Microsservico responsavel por consumir pedidos de compra, simular o processamento do pagamento e publicar o resultado para os outros servicos da plataforma.
 
-Este repositorio faz parte da Fase 2 do Tech Challenge e representa o microsservico independente de pagamentos.
-
 ## Responsabilidades
 
 - Consumir `OrderPlacedEvent` publicado pela CatalogAPI.
 - Simular pagamento de pedido com status `Approved` ou `Rejected`.
 - Publicar `PaymentProcessedEvent`.
 - Permitir que CatalogAPI confirme a biblioteca do usuario quando o pagamento for aprovado.
-- Permitir que NotificationsAPI envie a confirmacao de compra quando o pagamento for aprovado.
+- Permitir que Function ou NotificationsAPI simule a confirmacao de compra quando o pagamento for aprovado.
 - Expor endpoints de health para validacao local, Docker e Kubernetes.
 
 ## Tecnologias
@@ -72,6 +70,12 @@ Configuracao local padrao em `src/PaymentsAPI/appsettings.json`:
 
 Observacao: os segredos deste repositorio sao apenas para desenvolvimento local academico.
 
+## Requisitos
+
+- .NET 10 SDK.
+- RabbitMQ acessível com as credenciais configuradas.
+- Docker Desktop para executar a API em container.
+
 ## Executar a API localmente
 
 Antes de executar a PaymentsAPI, mantenha um RabbitMQ rodando. Voce pode usar o RabbitMQ do repositorio de orquestracao ou de outro microsservico, desde que esteja acessivel em `localhost:5672`.
@@ -96,7 +100,7 @@ O endpoint `/health` e o `/health/ready` tentam abrir conexao TCP com o RabbitMQ
 
 ## Swagger
 
-A PaymentsAPI nao possui endpoints de negocio neste momento, porque seu trabalho principal e consumir e publicar eventos via RabbitMQ. Mesmo assim, o Swagger esta habilitado para expor os endpoints operacionais, como health checks.
+A PaymentsAPI nao possui endpoints de negocio porque seu trabalho principal e consumir e publicar eventos via RabbitMQ. Mesmo assim, o Swagger esta habilitado para expor os endpoints operacionais, como health checks.
 
 ```text
 http://localhost:5163/swagger
@@ -112,7 +116,7 @@ Fila dedicada no RabbitMQ:
 payments-order-placed-event
 ```
 
-Essa fila e exclusiva da PaymentsAPI. Se no futuro outro microsservico tambem precisar reagir a `OrderPlacedEvent`, ele deve usar outra fila dedicada, mantendo o comportamento publish/subscribe.
+Cada serviço interessado em OrderPlacedEvent deve consumir uma fila dedicada para receber sua própria cópia do evento.
 
 Publicado pela CatalogAPI quando o usuario inicia a compra de um ou mais jogos.
 
@@ -161,7 +165,7 @@ Publicado pela PaymentsAPI apos simular o processamento do pagamento.
 }
 ```
 
-Quando `PaymentSimulation__DefaultStatus` esta como `Approved`, o fluxo feliz e acionado: CatalogAPI adiciona os jogos na biblioteca e NotificationsAPI simula e-mail de confirmacao.
+Quando `PaymentSimulation__DefaultStatus` esta como `Approved`, o fluxo feliz e acionado: CatalogAPI adiciona os jogos na biblioteca e o serviço de notificações simula e-mail de confirmacao.
 
 ## Fluxo de mensageria
 
@@ -177,7 +181,7 @@ PaymentsAPI
 CatalogAPI
   consome PaymentProcessedEvent e atualiza biblioteca
 
-NotificationsAPI
+Function (Docker) ou NotificationsAPI (Kubernetes)
   consome PaymentProcessedEvent e simula e-mail de compra aprovada
 ```
 
