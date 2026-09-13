@@ -207,7 +207,7 @@ Os testes atuais cobrem:
 Build da imagem:
 
 ```powershell
-docker build -t maicaoxd/fiap-cloud-games-payments-api:0.1.0 .
+docker build -t maicaoxd/fiap-cloud-games-payments-api:0.1.1 .
 ```
 
 Executar a imagem apontando para um RabbitMQ rodando no host:
@@ -221,7 +221,7 @@ docker run --rm -p 8084:8080 `
   -e RabbitMq__Username=guest `
   -e RabbitMq__Password=guest `
   -e PaymentSimulation__DefaultStatus=Approved `
-  maicaoxd/fiap-cloud-games-payments-api:0.1.0
+  maicaoxd/fiap-cloud-games-payments-api:0.1.1
 ```
 
 Acessar:
