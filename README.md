@@ -263,3 +263,9 @@ dotnet run --project src\PaymentsAPI\PaymentsAPI.csproj
 ### Nao aparece mensagem parada na fila
 
 Isso e normal quando o consumer esta funcionando. O RabbitMQ entrega a mensagem para a PaymentsAPI e, depois do ACK, a mensagem sai da fila. Para acompanhar o fluxo, olhe os contadores da fila no RabbitMQ Management e os logs da API.
+
+## CI/CD
+
+Pushes para master executam testes, publicam a imagem no ACR e atualizam apenas esta API no AKS. Pull requests executam testes e build sem publicar ou fazer deploy.
+
+As imagens recebem tags por commit e execução. Para acrescentar uma versão como v1.2.3, preencha version na execução manual pela master. O deploy no AKS usa o digest da imagem. Configure as variáveis Azure e a credencial federada deste repositório conforme o [guia da orquestração](https://github.com/Maicaoxd/fiap-cloud-games-orchestration/blob/master/k8s/azure/README.md#github-actions).
